@@ -7,17 +7,17 @@ import type {
 } from '@/types';
 
 export const animeService = {
-  getSeasonal: () =>
+  getSeasonal: (page = 1) =>
     api
       .get<JikanPaginatedResponse<Anime>>('/seasons/now', {
-        params: { limit: 24 },
+        params: { page, limit: 12 },
       })
       .then((r) => r.data),
 
   getTop: (page = 1) =>
     api
       .get<JikanPaginatedResponse<Anime>>('/top/anime', {
-        params: { page, limit: 24 },
+        params: { page, limit: 12 },
       })
       .then((r) => r.data),
 

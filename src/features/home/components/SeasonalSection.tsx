@@ -1,13 +1,19 @@
+import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { useI18n } from '@/hooks/useI18n';
 import { useSeasonalAnime } from '../hooks/useSeasonalAnime';
 import AnimeGrid from './AnimeGrid';
+import Pagination from '@/features/search/components/Pagination';
 
 export default function SeasonalSection() {
   const { t } = useI18n();
-  const { data, isLoading, isError } = useSeasonalAnime();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, isFetching } = useSeasonalAnime(page);
 
   if (isError) return null;
+
+  const animes = data?.data;
+  const pagination = data?.pagination;
 
   return (
     <section>
@@ -15,7 +21,21 @@ export default function SeasonalSection() {
         <Sparkles size={20} className="text-violet-500" />
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{t.home.thisSeason}</h2>
       </div>
-      <AnimeGrid animes={data} isLoading={isLoading} />
+      <AnimeGrid animes={animes} isLoading={isLoading && !animes} />
+      {pagination && (
+        <div className="mt-5">
+          <Pagination
+            pagination={pagination}
+            currentPage={page}
+            onPageChange={setPage}
+          />
+          {isFetching && !isLoading && (
+            <p className="mt-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+              Loading page...
+            </p>
+          )}
+        </div>
+      )}
     </section>
   );
 }
