@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Modal, Button } from '@/components/ui';
 import { useMyListStore } from '@/store/myListStore';
-import { WATCH_STATUSES, WATCH_STATUS_LABELS } from '@/utils/constants';
+import { useI18n } from '@/hooks/useI18n';
+import { WATCH_STATUSES } from '@/utils/constants';
 import type { WatchStatus } from '@/utils/constants';
 import type { UserListEntry } from '@/types';
 
@@ -12,14 +13,6 @@ interface EditStatusModalProps {
   onClose: () => void;
 }
 
-const SCORE_OPTIONS = [
-  { value: '', label: '— No score —' },
-  ...Array.from({ length: 10 }, (_, i) => ({
-    value: String(i + 1),
-    label: String(i + 1),
-  })),
-];
-
 const selectClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
 
@@ -27,6 +20,7 @@ const inputClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500';
 
 export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusModalProps) {
+  const { t } = useI18n();
   const { updateStatus, updateScore, updateEpisode, removeFromList } = useMyListStore();
 
   const [status, setStatus] = useState<WatchStatus>(entry.status);
@@ -34,6 +28,11 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
   const [episode, setEpisode] = useState<string>(
     entry.current_episode ? String(entry.current_episode) : '',
   );
+
+  const scoreOptions = [
+    { value: '', label: t.modal.noScore },
+    ...Array.from({ length: 10 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) })),
+  ];
 
   function handleStatusChange(newStatus: WatchStatus) {
     setStatus(newStatus);
@@ -55,13 +54,13 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Entry">
+    <Modal isOpen={isOpen} onClose={onClose} title={t.modal.editTitle}>
       <div className="flex flex-col gap-5">
         <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1">{entry.title}</p>
 
         {/* Status */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{t.modal.status}</label>
           <select
             value={status}
             onChange={(e) => handleStatusChange(e.target.value as WatchStatus)}
@@ -69,7 +68,7 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
           >
             {WATCH_STATUSES.map((s) => (
               <option key={s} value={s}>
-                {WATCH_STATUS_LABELS[s]}
+                {t.watchStatus[s]}
               </option>
             ))}
           </select>
@@ -78,7 +77,7 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
         {/* Episode */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Current Episode
+            {t.modal.currentEpisode}
             {entry.episodes !== null && (
               <span className="ml-1 font-normal text-zinc-400">/ {entry.episodes}</span>
             )}
@@ -97,14 +96,14 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
         {/* Score */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Your Score
+            {t.modal.yourScore}
           </label>
           <select
             value={score}
             onChange={(e) => setScore(e.target.value)}
             className={selectClass}
           >
-            {SCORE_OPTIONS.map((opt) => (
+            {scoreOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
@@ -115,7 +114,7 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
         {/* Actions */}
         <div className="flex items-center gap-3 pt-1">
           <Button variant="primary" size="md" onClick={handleSave} className="flex-1">
-            Save
+            {t.modal.save}
           </Button>
           <Button
             variant="ghost"

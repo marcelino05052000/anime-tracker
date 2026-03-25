@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
+import { useI18n } from '@/hooks/useI18n';
 import type { Anime } from '@/types';
 
 interface AnimeCardProps {
@@ -7,6 +8,7 @@ interface AnimeCardProps {
 }
 
 export default function AnimeCard({ anime }: AnimeCardProps) {
+  const { t } = useI18n();
   const title = anime.title_english ?? anime.title;
   const imageUrl = anime.images.webp.image_url || anime.images.jpg.image_url;
 
@@ -30,7 +32,7 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         )}
         {anime.airing && (
           <div className="absolute top-2 right-2 bg-violet-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
-            Airing
+            {t.animeCard.airing}
           </div>
         )}
       </div>
@@ -40,7 +42,7 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
           {title}
         </p>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 text-right">
-          {[anime.type, anime.episodes ? `${anime.episodes} ep` : null]
+          {[anime.type, anime.episodes ? `${anime.episodes} ${t.animeCard.ep}` : null]
             .filter(Boolean)
             .join(' · ')}
         </p>

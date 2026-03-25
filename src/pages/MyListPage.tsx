@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ListX } from 'lucide-react';
 import { useMyListStore } from '@/store/myListStore';
+import { useI18n } from '@/hooks/useI18n';
 import { WATCH_STATUSES } from '@/utils/constants';
 import MyListTabs from '@/features/my-list/components/MyListTabs';
 import MyListCard from '@/features/my-list/components/MyListCard';
@@ -8,6 +9,7 @@ import type { Tab } from '@/features/my-list/components/MyListTabs';
 import type { WatchStatus } from '@/utils/constants';
 
 export default function MyListPage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<Tab>('all');
   const list = useMyListStore((state) => state.list);
 
@@ -25,15 +27,15 @@ export default function MyListPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">My List</h1>
+      <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{t.myList.title}</h1>
 
       <MyListTabs activeTab={activeTab} counts={counts} onTabChange={setActiveTab} />
 
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-3 text-zinc-400">
           <ListX size={40} strokeWidth={1.5} />
-          <p className="text-base font-medium">Nothing here yet</p>
-          <p className="text-sm">Add anime from the Home or Search pages</p>
+          <p className="text-base font-medium">{t.myList.emptyTitle}</p>
+          <p className="text-sm">{t.myList.emptySubtitle}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

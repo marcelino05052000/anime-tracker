@@ -1,10 +1,12 @@
 import { Spinner } from '@/components/ui';
+import { useI18n } from '@/hooks/useI18n';
 import { useAnimeSearch } from '@/features/search/hooks/useAnimeSearch';
 import SearchFilters from '@/features/search/components/SearchFilters';
 import Pagination from '@/features/search/components/Pagination';
 import AnimeGrid from '@/features/home/components/AnimeGrid';
 
 export default function SearchPage() {
+  const { t } = useI18n();
   const {
     animes,
     pagination,
@@ -35,8 +37,8 @@ export default function SearchPage() {
 
       {!hasQuery && (
         <div className="flex flex-col items-center justify-center py-24 text-zinc-400 gap-3">
-          <p className="text-lg font-medium">Search for an anime</p>
-          <p className="text-sm">Use the filters above to find what you're looking for</p>
+          <p className="text-lg font-medium">{t.search.emptyTitle}</p>
+          <p className="text-sm">{t.search.emptySubtitle}</p>
         </div>
       )}
 
@@ -48,8 +50,8 @@ export default function SearchPage() {
 
       {isEmpty && (
         <div className="flex flex-col items-center justify-center py-24 text-zinc-400 gap-2">
-          <p className="text-lg font-medium">No results found</p>
-          <p className="text-sm">Try a different search term or filters</p>
+          <p className="text-lg font-medium">{t.search.noResultsTitle}</p>
+          <p className="text-sm">{t.search.noResultsSubtitle}</p>
         </div>
       )}
 

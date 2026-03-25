@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui';
-import { WATCH_STATUS_LABELS } from '@/utils/constants';
+import { useI18n } from '@/hooks/useI18n';
 import type { UserListEntry } from '@/types';
 import EditStatusModal from './EditStatusModal';
 
@@ -19,6 +19,7 @@ const STATUS_BADGE_VARIANT = {
 
 export default function MyListCard({ entry }: MyListCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
     <>
@@ -44,7 +45,7 @@ export default function MyListCard({ entry }: MyListCardProps) {
 
           <div className="flex items-center gap-2 flex-wrap">
             <Badge variant={STATUS_BADGE_VARIANT[entry.status]}>
-              {WATCH_STATUS_LABELS[entry.status]}
+              {t.watchStatus[entry.status]}
             </Badge>
 
             {entry.user_score !== null && (

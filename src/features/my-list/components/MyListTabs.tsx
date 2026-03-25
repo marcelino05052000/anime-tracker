@@ -1,4 +1,5 @@
-import { WATCH_STATUSES, WATCH_STATUS_LABELS } from '@/utils/constants';
+import { useI18n } from '@/hooks/useI18n';
+import { WATCH_STATUSES } from '@/utils/constants';
 import type { WatchStatus } from '@/utils/constants';
 
 type Tab = 'all' | WatchStatus;
@@ -9,15 +10,17 @@ interface MyListTabsProps {
   onTabChange: (tab: Tab) => void;
 }
 
-const TABS: { value: Tab; label: string }[] = [
-  { value: 'all', label: 'All' },
-  ...WATCH_STATUSES.map((s) => ({ value: s as Tab, label: WATCH_STATUS_LABELS[s] })),
-];
-
 export default function MyListTabs({ activeTab, counts, onTabChange }: MyListTabsProps) {
+  const { t } = useI18n();
+
+  const tabs: { value: Tab; label: string }[] = [
+    { value: 'all', label: t.myList.all },
+    ...WATCH_STATUSES.map((s) => ({ value: s as Tab, label: t.watchStatus[s] })),
+  ];
+
   return (
     <div className="flex gap-1 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
-      {TABS.map(({ value, label }) => {
+      {tabs.map(({ value, label }) => {
         const isActive = activeTab === value;
         const count = counts[value];
         return (

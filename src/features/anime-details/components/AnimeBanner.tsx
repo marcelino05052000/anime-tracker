@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Star, Trophy, Plus, Check, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { useMyListStore } from '@/store/myListStore';
+import { useI18n } from '@/hooks/useI18n';
 import type { Anime } from '@/types';
 import AddToListModal from './AddToListModal';
 
@@ -12,6 +13,7 @@ interface AnimeBannerProps {
 
 export default function AnimeBanner({ anime }: AnimeBannerProps) {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [modalOpen, setModalOpen] = useState(false);
   const isInList = useMyListStore((state) => state.isInList);
   const inList = isInList(anime.mal_id);
@@ -37,78 +39,78 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
             className="flex items-center gap-1.5 w-fit text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} />
-            Back
+            {t.animeBanner.back}
           </button>
 
-        <div className="flex flex-col sm:flex-row gap-8">
-          {/* Poster */}
-          <div className="shrink-0 mx-auto sm:mx-0">
-            <img
-              src={poster}
-              alt={title}
-              className="w-44 sm:w-52 rounded-xl shadow-2xl"
-            />
-          </div>
-
-          {/* Info */}
-          <div className="flex flex-col gap-4 justify-end">
-            <div className="flex flex-wrap gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-              {anime.type && <span>{anime.type}</span>}
-              {anime.year && <span>· {anime.year}</span>}
-              {anime.status && <span>· {anime.status}</span>}
+          <div className="flex flex-col sm:flex-row gap-8">
+            {/* Poster */}
+            <div className="shrink-0 mx-auto sm:mx-0">
+              <img
+                src={poster}
+                alt={title}
+                className="w-44 sm:w-52 rounded-xl shadow-2xl"
+              />
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
-              {title}
-            </h1>
+            {/* Info */}
+            <div className="flex flex-col gap-4 justify-end">
+              <div className="flex flex-wrap gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                {anime.type && <span>{anime.type}</span>}
+                {anime.year && <span>· {anime.year}</span>}
+                {anime.status && <span>· {anime.status}</span>}
+              </div>
 
-            {anime.title_english && anime.title !== anime.title_english && (
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">{anime.title}</p>
-            )}
+              <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
+                {title}
+              </h1>
 
-            {/* Stats */}
-            <div className="flex flex-wrap items-center gap-5">
-              {anime.score !== null && (
-                <div className="flex items-center gap-1.5">
-                  <Star size={18} className="text-yellow-400 fill-yellow-400" />
-                  <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                    {anime.score.toFixed(2)}
-                  </span>
-                  {anime.scored_by && (
-                    <span className="text-xs text-zinc-500">
-                      ({anime.scored_by.toLocaleString()} votes)
+              {anime.title_english && anime.title !== anime.title_english && (
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">{anime.title}</p>
+              )}
+
+              {/* Stats */}
+              <div className="flex flex-wrap items-center gap-5">
+                {anime.score !== null && (
+                  <div className="flex items-center gap-1.5">
+                    <Star size={18} className="text-yellow-400 fill-yellow-400" />
+                    <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                      {anime.score.toFixed(2)}
                     </span>
-                  )}
-                </div>
-              )}
-              {anime.rank !== null && (
-                <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400">
-                  <Trophy size={16} />
-                  <span className="text-sm font-medium">#{anime.rank}</span>
-                </div>
-              )}
-            </div>
-
-            {/* CTA */}
-            <div>
-              <Button
-                variant={inList ? 'secondary' : 'primary'}
-                size="md"
-                onClick={() => setModalOpen(true)}
-              >
-                {inList ? (
-                  <>
-                    <Check size={16} /> In My List
-                  </>
-                ) : (
-                  <>
-                    <Plus size={16} /> Add to List
-                  </>
+                    {anime.scored_by && (
+                      <span className="text-xs text-zinc-500">
+                        ({anime.scored_by.toLocaleString()} {t.animeBanner.votes})
+                      </span>
+                    )}
+                  </div>
                 )}
-              </Button>
+                {anime.rank !== null && (
+                  <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400">
+                    <Trophy size={16} />
+                    <span className="text-sm font-medium">#{anime.rank}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* CTA */}
+              <div>
+                <Button
+                  variant={inList ? 'secondary' : 'primary'}
+                  size="md"
+                  onClick={() => setModalOpen(true)}
+                >
+                  {inList ? (
+                    <>
+                      <Check size={16} /> {t.animeBanner.inMyList}
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={16} /> {t.animeBanner.addToList}
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 

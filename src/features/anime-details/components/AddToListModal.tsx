@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Modal, Button } from '@/components/ui';
 import { useMyListStore } from '@/store/myListStore';
-import { WATCH_STATUSES, WATCH_STATUS_LABELS } from '@/utils/constants';
+import { useI18n } from '@/hooks/useI18n';
+import { WATCH_STATUSES } from '@/utils/constants';
 import type { WatchStatus } from '@/utils/constants';
 import type { Anime } from '@/types';
 
@@ -12,14 +13,6 @@ interface AddToListModalProps {
   onClose: () => void;
 }
 
-const SCORE_OPTIONS = [
-  { value: '', label: '— No score —' },
-  ...Array.from({ length: 10 }, (_, i) => ({
-    value: String(i + 1),
-    label: String(i + 1),
-  })),
-];
-
 const selectClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
 
@@ -27,6 +20,7 @@ const inputClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500';
 
 export default function AddToListModal({ anime, isOpen, onClose }: AddToListModalProps) {
+  const { t } = useI18n();
   const { list, addToList, updateStatus, updateScore, updateEpisode, removeFromList } =
     useMyListStore();
   const entry = list[anime.mal_id];
@@ -36,6 +30,11 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
   const [episode, setEpisode] = useState<string>(
     entry?.current_episode ? String(entry.current_episode) : '',
   );
+
+  const scoreOptions = [
+    { value: '', label: t.modal.noScore },
+    ...Array.from({ length: 10 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) })),
+  ];
 
   function handleStatusChange(newStatus: WatchStatus) {
     setStatus(newStatus);
@@ -68,14 +67,14 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={entry ? 'Update in My List' : 'Add to My List'}
+      title={entry ? t.modal.updateTitle : t.modal.addTitle}
     >
       <div className="flex flex-col gap-5">
         <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1">{animeTitle}</p>
 
         {/* Status */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{t.modal.status}</label>
           <select
             value={status}
             onChange={(e) => handleStatusChange(e.target.value as WatchStatus)}
@@ -83,7 +82,7 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
           >
             {WATCH_STATUSES.map((s) => (
               <option key={s} value={s}>
-                {WATCH_STATUS_LABELS[s]}
+                {t.watchStatus[s]}
               </option>
             ))}
           </select>
@@ -92,7 +91,7 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
         {/* Episode */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Current Episode
+            {t.modal.currentEpisode}
             {anime.episodes !== null && (
               <span className="ml-1 font-normal text-zinc-400">/ {anime.episodes}</span>
             )}
@@ -111,14 +110,14 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
         {/* Score */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Your Score
+            {t.modal.yourScore}
           </label>
           <select
             value={score}
             onChange={(e) => setScore(e.target.value)}
             className={selectClass}
           >
-            {SCORE_OPTIONS.map((opt) => (
+            {scoreOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
@@ -129,7 +128,7 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
         {/* Actions */}
         <div className="flex items-center gap-3 pt-1">
           <Button variant="primary" size="md" onClick={handleSave} className="flex-1">
-            {entry ? 'Update' : 'Add'}
+            {entry ? t.modal.update : t.modal.add}
           </Button>
           {entry && (
             <Button

@@ -1,3 +1,11 @@
+import { useI18n } from '@/hooks/useI18n';
+import { useTranslatedSynopsis } from '../hooks/useTranslatedSynopsis';
+import {
+  translateAnimeStatus,
+  translateAnimeSeason,
+  translateAnimeRating,
+  translateDuration,
+} from '@/i18n/animeFieldTranslations';
 import type { Anime } from '@/types';
 import GenreBadges from './GenreBadges';
 import YouTubeEmbed from './YouTubeEmbed';
@@ -24,7 +32,21 @@ function DetailRow({ label, value }: DetailRowProps) {
 }
 
 export default function AnimeInfo({ anime }: AnimeInfoProps) {
+  const { t, language } = useI18n();
+  const d = t.animeInfo;
   const studios = anime.studios.map((s) => s.name).join(', ') || null;
+  const translatedStatus = translateAnimeStatus(anime.status, language);
+  const translatedSeason =
+    anime.season && anime.year
+      ? `${translateAnimeSeason(anime.season, language)} ${anime.year}`
+      : null;
+  const translatedRating = translateAnimeRating(anime.rating, language);
+  const translatedDuration = translateDuration(anime.duration, language);
+  const { data: translatedSynopsis, isLoading: isTranslating } = useTranslatedSynopsis(
+    anime.synopsis,
+    language,
+  );
+  const synopsis = language === 'pt-BR' ? (translatedSynopsis ?? anime.synopsis) : anime.synopsis;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-10">
@@ -32,16 +54,22 @@ export default function AnimeInfo({ anime }: AnimeInfoProps) {
       <div className="flex flex-col gap-8 flex-1 min-w-0">
         {anime.synopsis && (
           <section>
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">Synopsis</h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-line">
-              {anime.synopsis}
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">{d.synopsis}</h2>
+            <p
+              className={`text-sm leading-relaxed whitespace-pre-line transition-opacity duration-300 ${
+                isTranslating
+                  ? 'text-zinc-400 dark:text-zinc-600 animate-pulse'
+                  : 'text-zinc-600 dark:text-zinc-400'
+              }`}
+            >
+              {synopsis}
             </p>
           </section>
         )}
 
         {anime.trailer.youtube_id !== null && (
           <section>
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">Trailer</h2>
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">{d.trailer}</h2>
             <YouTubeEmbed youtubeId={anime.trailer.youtube_id} title={anime.title_english ?? anime.title} />
           </section>
         )}
@@ -50,23 +78,23 @@ export default function AnimeInfo({ anime }: AnimeInfoProps) {
       {/* Right: Metadata sidebar */}
       <aside className="lg:w-64 shrink-0 flex flex-col gap-6">
         <section>
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">Details</h2>
+          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">{d.details}</h2>
           <div className="flex flex-col gap-3">
-            <DetailRow label="Episodes" value={anime.episodes} />
-            <DetailRow label="Status" value={anime.status} />
-            <DetailRow label="Season" value={anime.season && anime.year ? `${anime.season} ${anime.year}` : null} />
-            <DetailRow label="Studios" value={studios} />
-            <DetailRow label="Source" value={anime.source} />
-            <DetailRow label="Duration" value={anime.duration} />
-            <DetailRow label="Rating" value={anime.rating} />
-            <DetailRow label="Popularity" value={anime.popularity ? `#${anime.popularity}` : null} />
-            <DetailRow label="Members" value={anime.members?.toLocaleString()} />
+            <DetailRow label={d.episodes} value={anime.episodes} />
+            <DetailRow label={d.status} value={translatedStatus} />
+            <DetailRow label={d.season} value={translatedSeason} />
+            <DetailRow label={d.studios} value={studios} />
+            <DetailRow label={d.source} value={anime.source} />
+            <DetailRow label={d.duration} value={translatedDuration} />
+            <DetailRow label={d.rating} value={translatedRating} />
+            <DetailRow label={d.popularity} value={anime.popularity ? `#${anime.popularity}` : null} />
+            <DetailRow label={d.members} value={anime.members?.toLocaleString()} />
           </div>
         </section>
 
         {(anime.genres.length > 0 || anime.themes.length > 0) && (
           <section>
-            <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-3">Genres & Themes</h2>
+            <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-3">{d.genresThemes}</h2>
             <GenreBadges genres={anime.genres} themes={anime.themes} />
           </section>
         )}

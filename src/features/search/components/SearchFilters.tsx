@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react';
+import { useI18n } from '@/hooks/useI18n';
 
 interface SearchFiltersProps {
   q: string;
@@ -8,21 +9,6 @@ interface SearchFiltersProps {
   onStatusChange: (value: string | undefined) => void;
   onOrderByChange: (value: string | undefined) => void;
 }
-
-const STATUS_OPTIONS = [
-  { value: '', label: 'Any status' },
-  { value: 'airing', label: 'Airing' },
-  { value: 'complete', label: 'Completed' },
-  { value: 'upcoming', label: 'Upcoming' },
-] as const;
-
-const ORDER_BY_OPTIONS = [
-  { value: '', label: 'Relevance' },
-  { value: 'score', label: 'Score' },
-  { value: 'popularity', label: 'Popularity' },
-  { value: 'rank', label: 'Rank' },
-  { value: 'members', label: 'Members' },
-] as const;
 
 const selectClass =
   'h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
@@ -35,6 +21,24 @@ export default function SearchFilters({
   onStatusChange,
   onOrderByChange,
 }: SearchFiltersProps) {
+  const { t } = useI18n();
+  const s = t.search;
+
+  const statusOptions = [
+    { value: '', label: s.anyStatus },
+    { value: 'airing', label: s.statusAiring },
+    { value: 'complete', label: s.statusCompleted },
+    { value: 'upcoming', label: s.statusUpcoming },
+  ];
+
+  const orderByOptions = [
+    { value: '', label: s.orderRelevance },
+    { value: 'score', label: s.orderScore },
+    { value: 'popularity', label: s.orderPopularity },
+    { value: 'rank', label: s.orderRank },
+    { value: 'members', label: s.orderMembers },
+  ];
+
   return (
     <div className="flex flex-col sm:flex-row gap-3">
       {/* Search input */}
@@ -47,7 +51,7 @@ export default function SearchFilters({
           type="text"
           value={q}
           onChange={(e) => onQChange(e.target.value)}
-          placeholder="Search anime..."
+          placeholder={s.placeholder}
           className="w-full h-10 pl-9 pr-4 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
         />
       </div>
@@ -58,7 +62,7 @@ export default function SearchFilters({
         onChange={(e) => onStatusChange(e.target.value || undefined)}
         className={selectClass}
       >
-        {STATUS_OPTIONS.map((opt) => (
+        {statusOptions.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
@@ -71,7 +75,7 @@ export default function SearchFilters({
         onChange={(e) => onOrderByChange(e.target.value || undefined)}
         className={selectClass}
       >
-        {ORDER_BY_OPTIONS.map((opt) => (
+        {orderByOptions.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
