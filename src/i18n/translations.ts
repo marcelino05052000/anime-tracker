@@ -80,6 +80,9 @@ const translations = {
       notFound: 'Anime not found',
       backToHome: 'Back to Home',
     },
+    notFound: {
+      subtitle: "The page you're looking for doesn't exist.",
+    },
   },
   'pt-BR': {
     nav: {
@@ -159,6 +162,9 @@ const translations = {
     details: {
       notFound: 'Anime não encontrado',
       backToHome: 'Voltar ao Início',
+    },
+    notFound: {
+      subtitle: 'A página que você procura não existe.',
     },
   },
 } as const;
