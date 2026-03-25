@@ -23,20 +23,36 @@ const SCORE_OPTIONS = [
 const selectClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
 
+const inputClass =
+  'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500';
+
 export default function AddToListModal({ anime, isOpen, onClose }: AddToListModalProps) {
-  const { list, addToList, updateStatus, updateScore, removeFromList } = useMyListStore();
+  const { list, addToList, updateStatus, updateScore, updateEpisode, removeFromList } =
+    useMyListStore();
   const entry = list[anime.mal_id];
 
   const [status, setStatus] = useState<WatchStatus>(entry?.status ?? 'plan_to_watch');
   const [score, setScore] = useState<string>(entry?.user_score ? String(entry.user_score) : '');
+  const [episode, setEpisode] = useState<string>(
+    entry?.current_episode ? String(entry.current_episode) : '',
+  );
+
+  function handleStatusChange(newStatus: WatchStatus) {
+    setStatus(newStatus);
+    if (newStatus === 'completed' && anime.status === 'Finished Airing' && anime.episodes !== null) {
+      setEpisode(String(anime.episodes));
+    }
+  }
 
   function handleSave() {
     const parsedScore = score ? Number(score) : null;
+    const parsedEpisode = episode ? Number(episode) : null;
     if (entry) {
       updateStatus(anime.mal_id, status);
       updateScore(anime.mal_id, parsedScore);
+      updateEpisode(anime.mal_id, parsedEpisode);
     } else {
-      addToList(anime, status, parsedScore);
+      addToList(anime, status, parsedScore, parsedEpisode);
     }
     onClose();
   }
@@ -46,7 +62,7 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
     onClose();
   }
 
-  const title = anime.title_english ?? anime.title;
+  const animeTitle = anime.title_english ?? anime.title;
 
   return (
     <Modal
@@ -55,14 +71,14 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
       title={entry ? 'Update in My List' : 'Add to My List'}
     >
       <div className="flex flex-col gap-5">
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1">{title}</p>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1">{animeTitle}</p>
 
         {/* Status */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value as WatchStatus)}
+            onChange={(e) => handleStatusChange(e.target.value as WatchStatus)}
             className={selectClass}
           >
             {WATCH_STATUSES.map((s) => (
@@ -71,6 +87,25 @@ export default function AddToListModal({ anime, isOpen, onClose }: AddToListModa
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Episode */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Current Episode
+            {anime.episodes !== null && (
+              <span className="ml-1 font-normal text-zinc-400">/ {anime.episodes}</span>
+            )}
+          </label>
+          <input
+            type="number"
+            min={0}
+            max={anime.episodes ?? undefined}
+            value={episode}
+            onChange={(e) => setEpisode(e.target.value)}
+            placeholder="0"
+            className={inputClass}
+          />
         </div>
 
         {/* Score */}

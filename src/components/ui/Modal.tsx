@@ -31,10 +31,10 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
       >
         {title && (
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700 px-6 py-4">
-            <h2 className="text-lg font-semibold">{title}</h2>
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="p-1 rounded-lg text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               aria-label="Close modal"
             >
               <X size={18} />

@@ -25,7 +25,7 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         {anime.score !== null && (
           <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/70 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
             <Star size={11} className="text-yellow-400 fill-yellow-400" />
-            {anime.score.toFixed(1)}
+            {anime.score.toFixed(2)}
           </div>
         )}
         {anime.airing && (
@@ -35,11 +35,11 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         )}
       </div>
 
-      <div className="p-3 flex flex-col gap-1">
+      <div className="p-3 flex flex-col flex-1 justify-between gap-1">
         <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
           {title}
         </p>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 text-right">
           {[anime.type, anime.episodes ? `${anime.episodes} ep` : null]
             .filter(Boolean)
             .join(' · ')}

@@ -55,8 +55,12 @@ export default function MyListCard({ entry }: MyListCardProps) {
             )}
           </div>
 
-          {entry.episodes !== null && (
-            <p className="text-xs text-zinc-400">{entry.episodes} episodes</p>
+          {(entry.current_episode !== null || entry.episodes !== null) && (
+            <p className="text-xs text-zinc-400">
+              Ep{' '}
+              {entry.current_episode !== null ? entry.current_episode : '?'}
+              {entry.episodes !== null ? ` / ${entry.episodes}` : ''}
+            </p>
           )}
         </div>
 

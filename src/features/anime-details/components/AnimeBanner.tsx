@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Star, Trophy, Plus, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Star, Trophy, Plus, Check, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { useMyListStore } from '@/store/myListStore';
 import type { Anime } from '@/types';
@@ -10,6 +11,7 @@ interface AnimeBannerProps {
 }
 
 export default function AnimeBanner({ anime }: AnimeBannerProps) {
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const isInList = useMyListStore((state) => state.isInList);
   const inList = isInList(anime.mal_id);
@@ -29,7 +31,16 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white dark:via-zinc-950/60 dark:to-zinc-950" />
 
         {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 py-10 flex flex-col sm:flex-row gap-8">
+        <div className="relative max-w-7xl mx-auto px-4 pt-4 pb-10 flex flex-col gap-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1.5 w-fit text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
+          >
+            <ArrowLeft size={16} />
+            Voltar
+          </button>
+
+        <div className="flex flex-col sm:flex-row gap-8">
           {/* Poster */}
           <div className="shrink-0 mx-auto sm:mx-0">
             <img
@@ -97,6 +108,7 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
               </Button>
             </div>
           </div>
+        </div>
         </div>
       </div>
 

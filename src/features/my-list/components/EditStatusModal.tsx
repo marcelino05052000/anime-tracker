@@ -23,15 +23,29 @@ const SCORE_OPTIONS = [
 const selectClass =
   'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
 
+const inputClass =
+  'w-full h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500';
+
 export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusModalProps) {
-  const { updateStatus, updateScore, removeFromList } = useMyListStore();
+  const { updateStatus, updateScore, updateEpisode, removeFromList } = useMyListStore();
 
   const [status, setStatus] = useState<WatchStatus>(entry.status);
   const [score, setScore] = useState<string>(entry.user_score ? String(entry.user_score) : '');
+  const [episode, setEpisode] = useState<string>(
+    entry.current_episode ? String(entry.current_episode) : '',
+  );
+
+  function handleStatusChange(newStatus: WatchStatus) {
+    setStatus(newStatus);
+    if (newStatus === 'completed' && entry.episodes !== null) {
+      setEpisode(String(entry.episodes));
+    }
+  }
 
   function handleSave() {
     updateStatus(entry.mal_id, status);
     updateScore(entry.mal_id, score ? Number(score) : null);
+    updateEpisode(entry.mal_id, episode ? Number(episode) : null);
     onClose();
   }
 
@@ -50,7 +64,7 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
           <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value as WatchStatus)}
+            onChange={(e) => handleStatusChange(e.target.value as WatchStatus)}
             className={selectClass}
           >
             {WATCH_STATUSES.map((s) => (
@@ -59,6 +73,25 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Episode */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Current Episode
+            {entry.episodes !== null && (
+              <span className="ml-1 font-normal text-zinc-400">/ {entry.episodes}</span>
+            )}
+          </label>
+          <input
+            type="number"
+            min={0}
+            max={entry.episodes ?? undefined}
+            value={episode}
+            onChange={(e) => setEpisode(e.target.value)}
+            placeholder="0"
+            className={inputClass}
+          />
         </div>
 
         {/* Score */}
