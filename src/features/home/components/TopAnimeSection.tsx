@@ -13,6 +13,7 @@ export default function TopAnimeSection() {
   if (isError) return null;
 
   const animes = data?.data;
+  const visibleAnimes = animes?.slice(0, 12);
   const pagination = data?.pagination;
 
   return (
@@ -21,7 +22,7 @@ export default function TopAnimeSection() {
         <TrendingUp size={20} className="text-violet-500" />
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{t.home.topAnime}</h2>
       </div>
-      <AnimeGrid animes={animes} isLoading={isLoading && !animes} />
+      <AnimeGrid key={page} animes={visibleAnimes} isLoading={isLoading && !animes} />
       {pagination && (
         <div className="mt-5">
           <Pagination

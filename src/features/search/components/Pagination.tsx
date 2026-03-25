@@ -20,8 +20,19 @@ export default function Pagination({ pagination, currentPage, onPageChange }: Pa
   const pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-center gap-1 flex-wrap">
+    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage <= 1}
+        aria-label="Previous page"
+        className="justify-self-start"
+      >
+        <ChevronLeft size={16} />
+      </Button>
+
+      <div className="flex items-center justify-center gap-1 flex-wrap min-w-0">
         {start > 1 && (
           <>
             <PageButton page={1} current={currentPage} onClick={onPageChange} />
@@ -41,27 +52,16 @@ export default function Pagination({ pagination, currentPage, onPageChange }: Pa
         )}
       </div>
 
-      <div className="flex items-center justify-between gap-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage <= 1}
-          aria-label="Previous page"
-        >
-          <ChevronLeft size={16} />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={!has_next_page}
-          aria-label="Next page"
-        >
-          <ChevronRight size={16} />
-        </Button>
-      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={!has_next_page}
+        aria-label="Next page"
+        className="justify-self-end"
+      >
+        <ChevronRight size={16} />
+      </Button>
     </div>
   );
 }
