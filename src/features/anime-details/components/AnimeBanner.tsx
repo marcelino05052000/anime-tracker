@@ -33,7 +33,7 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white dark:via-zinc-950/60 dark:to-zinc-950" />
 
         {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 pt-4 pb-10 flex flex-col gap-6">
+        <div className="relative max-w-7xl mx-auto px-4 pt-3 sm:pt-4 pb-8 sm:pb-10 flex flex-col gap-5 sm:gap-6">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-1.5 w-fit text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
@@ -42,13 +42,13 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
             {t.animeBanner.back}
           </button>
 
-          <div className="flex flex-col sm:flex-row gap-8">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
             {/* Poster */}
             <div className="shrink-0 mx-auto sm:mx-0">
               <img
                 src={poster}
                 alt={title}
-                className="w-44 sm:w-52 rounded-xl shadow-2xl"
+                className="w-36 sm:w-52 rounded-xl shadow-2xl"
               />
             </div>
 
@@ -60,7 +60,7 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
                 {anime.status && <span>· {anime.status}</span>}
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
                 {title}
               </h1>
 
@@ -69,7 +69,7 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
               )}
 
               {/* Stats */}
-              <div className="flex flex-wrap items-center gap-5">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                 {anime.score !== null && (
                   <div className="flex items-center gap-1.5">
                     <Star size={18} className="text-yellow-400 fill-yellow-400" />

@@ -11,7 +11,7 @@ interface SearchFiltersProps {
 }
 
 const selectClass =
-  'h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
+  'w-full sm:w-auto h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
 
 export default function SearchFilters({
   q,
@@ -40,7 +40,7 @@ export default function SearchFilters({
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_auto] gap-3">
       {/* Search input */}
       <div className="relative flex-1">
         <Search

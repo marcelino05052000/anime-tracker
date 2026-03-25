@@ -26,8 +26,10 @@ export default function MyListPage() {
     activeTab === 'all' ? entries : entries.filter((e) => e.status === (activeTab as WatchStatus));
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{t.myList.title}</h1>
+    <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 flex flex-col gap-5 sm:gap-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+        {t.myList.title}
+      </h1>
 
       <MyListTabs activeTab={activeTab} counts={counts} onTabChange={setActiveTab} />
 

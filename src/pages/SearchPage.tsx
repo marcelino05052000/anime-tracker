@@ -25,7 +25,7 @@ export default function SearchPage() {
   const isEmpty = hasQuery && !isLoading && animes?.length === 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col gap-6">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col gap-5 sm:gap-6">
       <SearchFilters
         q={q}
         status={status}
@@ -36,7 +36,7 @@ export default function SearchPage() {
       />
 
       {!hasQuery && (
-        <div className="flex flex-col items-center justify-center py-24 text-zinc-400 gap-3">
+        <div className="flex flex-col items-center justify-center py-16 sm:py-24 text-zinc-400 gap-2 sm:gap-3 text-center">
           <p className="text-lg font-medium">{t.search.emptyTitle}</p>
           <p className="text-sm">{t.search.emptySubtitle}</p>
         </div>
@@ -49,7 +49,7 @@ export default function SearchPage() {
       )}
 
       {isEmpty && (
-        <div className="flex flex-col items-center justify-center py-24 text-zinc-400 gap-2">
+        <div className="flex flex-col items-center justify-center py-16 sm:py-24 text-zinc-400 gap-2 text-center">
           <p className="text-lg font-medium">{t.search.noResultsTitle}</p>
           <p className="text-sm">{t.search.noResultsSubtitle}</p>
         </div>

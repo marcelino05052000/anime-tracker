@@ -22,11 +22,11 @@ interface DetailRowProps {
 function DetailRow({ label, value }: DetailRowProps) {
   if (value === null || value === undefined) return null;
   return (
-    <div className="flex gap-2">
-      <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400 w-28 shrink-0">
+    <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+      <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400 sm:w-28 sm:shrink-0">
         {label}
       </span>
-      <span className="text-sm text-zinc-900 dark:text-zinc-100">{value}</span>
+      <span className="text-sm text-zinc-900 dark:text-zinc-100 break-words">{value}</span>
     </div>
   );
 }
@@ -49,9 +49,9 @@ export default function AnimeInfo({ anime }: AnimeInfoProps) {
   const synopsis = language === 'pt-BR' ? (translatedSynopsis ?? anime.synopsis) : anime.synopsis;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-10">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col lg:flex-row gap-8 sm:gap-10">
       {/* Left: Synopsis + Trailer */}
-      <div className="flex flex-col gap-8 flex-1 min-w-0">
+      <div className="flex flex-col gap-7 sm:gap-8 flex-1 min-w-0">
         {anime.synopsis && (
           <section>
             <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">{d.synopsis}</h2>
@@ -76,7 +76,7 @@ export default function AnimeInfo({ anime }: AnimeInfoProps) {
       </div>
 
       {/* Right: Metadata sidebar */}
-      <aside className="lg:w-64 shrink-0 flex flex-col gap-6">
+      <aside className="lg:w-64 shrink-0 flex flex-col gap-6 border-t border-zinc-200 dark:border-zinc-800 pt-6 lg:border-t-0 lg:pt-0">
         <section>
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">{d.details}</h2>
           <div className="flex flex-col gap-3">
