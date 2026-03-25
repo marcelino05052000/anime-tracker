@@ -37,7 +37,7 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
             className="flex items-center gap-1.5 w-fit text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} />
-            Voltar
+            Back
           </button>
 
         <div className="flex flex-col sm:flex-row gap-8">
