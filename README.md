@@ -1,5 +1,98 @@
 # AniTracker
 
+Anime catalogue and tracker consuming the [Jikan API](https://jikan.moe/) (unofficial MyAnimeList wrapper). Portfolio project built with React 19, TypeScript, and Tailwind CSS v4.
+
+## Features
+
+- **Home** — current season anime and top anime listings
+- **Search** — search by title with status and sorting filters; parameters persisted in the URL
+- **Details** — backdrop banner, poster, score, rank, synopsis, YouTube trailer, and full metadata
+- **My List** — add anime to your personal list with watch status, current episode, and score; data saved in `localStorage`
+- **Theme** — light/dark mode with persistence across sessions
+- **Internationalization** — UI in English and Brazilian Portuguese; synopsis auto-translated via MyMemory API; fields like status, season, rating, duration, and genres also translated
+
+## Stack
+
+| Technology | Version | Usage |
+|---|---|---|
+| React | 19.2 | UI |
+| TypeScript | 5.9 | Static typing (strict mode) |
+| Vite | 8.0 | Build tool |
+| Tailwind CSS | **v4** | Styling (CSS-first, no config file) |
+| React Router DOM | 7.13 | SPA routing |
+| TanStack Query | 5.95 | Data fetching and caching |
+| Zustand | 5.0 | Global state with persistence |
+| Axios | 1.13 | HTTP client with automatic retry on rate limit |
+| Lucide React | 1.6 | Icons |
+
+## Routes
+
+| Route | Description |
+|---|---|
+| `/` | Home — seasonal and top anime |
+| `/search` | Search with filters |
+| `/anime/:id` | Anime details |
+| `/my-list` | User's personal list |
+
+## Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Development server
+npm run dev
+
+# Production build
+npm run build
+
+# Type check
+npx tsc --noEmit
+
+# Lint
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── ui/          # Primitives: Button, Badge, Skeleton, Spinner, Modal
+│   └── layout/      # Header, RootLayout
+├── features/        # Business domains
+│   ├── home/        # useSeasonalAnime, useTopAnime, AnimeCard, AnimeGrid, SeasonalSection, TopAnimeSection
+│   ├── search/      # useAnimeSearch, SearchFilters, Pagination
+│   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
+│   └── my-list/     # MyListTabs, MyListCard, EditStatusModal
+├── hooks/           # useDebounce, useTheme, useI18n
+├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
+├── pages/           # Feature composition only — no logic
+├── router/          # createBrowserRouter
+├── services/
+│   ├── api.ts       # Axios instance with 429 retry
+│   └── jikan/       # anime.service.ts
+├── store/           # myListStore, themeStore, languageStore (Zustand + persist)
+├── types/           # TypeScript interfaces (anime, api, user)
+└── utils/           # constants.ts (QUERY_KEYS, WATCH_STATUSES)
+```
+
+## Technical Decisions
+
+- **Tailwind v4** — CSS-first config via `@import "tailwindcss"` and Vite plugin; dark mode with `@custom-variant dark`
+- **URL filters** — `useSearchParams` keeps search state shareable and compatible with browser back/forward
+- **Rate limit** — Axios interceptor auto-retries with 1s delay on 429 (Jikan: 3 req/s, 60 req/min)
+- **Path alias** — `@/` maps to `src/` in both Vite and TypeScript
+- **Persistence** — Zustand `persist` middleware saves list, theme, and language to `localStorage`
+- **Episode tracking** — when marking an anime as "completed", the current episode field auto-fills with the total
+- **i18n without a library** — lightweight system using `as const` object + Zustand store + `useI18n()` hook; type-safe via type derived from `typeof translations['en']`
+- **Synopsis translation** — MyMemory API (free, no key required); long synopses split into ≤450 char chunks; `staleTime: Infinity` prevents re-translation on navigation
+- **Field translation** — static mappings in `animeFieldTranslations.ts` for status, season, rating, duration, and ~70 genres/themes/demographics
+
+---
+
+# AniTracker (PT-BR)
+
 Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (wrapper não-oficial do MyAnimeList). Projeto de portfólio construído com React 19, TypeScript e Tailwind CSS v4.
 
 ## Funcionalidades
@@ -9,6 +102,7 @@ Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (w
 - **Detalhes** — banner com backdrop, poster, score, rank, sinopse, trailer do YouTube e metadados completos
 - **Minha Lista** — adicione animes à sua lista pessoal com status de watch, episódio atual e nota; dados salvos no `localStorage`
 - **Tema** — modo claro/escuro com persistência entre sessões
+- **Internacionalização** — interface em Inglês e Português (Brasil); sinopse traduzida automaticamente via MyMemory API; campos como status, temporada, classificação, duração e gêneros também traduzidos
 
 ## Stack
 
@@ -64,13 +158,14 @@ src/
 │   ├── search/      # useAnimeSearch, SearchFilters, Pagination
 │   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
 │   └── my-list/     # MyListTabs, MyListCard, EditStatusModal
-├── hooks/           # useDebounce, useTheme
+├── hooks/           # useDebounce, useTheme, useI18n
+├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
 ├── pages/           # Composição de features (sem lógica)
 ├── router/          # createBrowserRouter
 ├── services/
 │   ├── api.ts       # Instância Axios com retry no 429
 │   └── jikan/       # anime.service.ts
-├── store/           # myListStore, themeStore (Zustand + persist)
+├── store/           # myListStore, themeStore, languageStore (Zustand + persist)
 ├── types/           # Interfaces TypeScript (anime, api, user)
 └── utils/           # constants.ts (QUERY_KEYS, WATCH_STATUSES)
 ```
@@ -81,5 +176,8 @@ src/
 - **Filtros na URL** — `useSearchParams` mantém estado de busca compartilhável e compatível com back/forward do browser
 - **Rate limit** — interceptor Axios faz retry automático com 1s de delay ao receber 429 (Jikan: 3 req/s, 60 req/min)
 - **Path alias** — `@/` aponta para `src/` em Vite e TypeScript
-- **Persistência** — Zustand com `persist` middleware salva lista e tema no `localStorage`
+- **Persistência** — Zustand com `persist` middleware salva lista, tema e idioma no `localStorage`
 - **Rastreamento de episódios** — ao marcar um anime como "completed", o campo de episódio atual é preenchido automaticamente com o total
+- **i18n sem biblioteca** — sistema leve com objeto `as const` + Zustand store + hook `useI18n()`; type-safe via tipo derivado de `typeof translations['en']`
+- **Tradução de sinopse** — MyMemory API (gratuita, sem chave); sinopses longas divididas em chunks de 450 chars por limite da API; cache infinito para evitar retradução
+- **Tradução de campos** — mapeamento estático em `animeFieldTranslations.ts` para status, temporada, classificação, duração e ~70 gêneros/temas/demografias
