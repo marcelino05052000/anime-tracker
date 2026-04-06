@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Menu, Moon, Sun, Tv, X } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Menu, Moon, Sun, Tv, X, LogIn, LogOut, User } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useI18n } from '@/hooks/useI18n';
+import { useAuthContext } from '@/features/auth/context/AuthContext';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 import type { Language } from '@/i18n/translations';
 
 const LANGUAGES: { value: Language; label: string }[] = [
@@ -21,9 +23,19 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { t, language, setLanguage } = useI18n();
+  const { user, isAuthenticated } = useAuthContext();
+  const logout = useLogout();
+  const navigate = useNavigate();
 
   function handleCloseMobileMenu() {
     setMobileMenuOpen(false);
+  }
+
+  function handleLogout() {
+    logout.mutate(undefined, {
+      onSettled: () => navigate('/'),
+    });
+    handleCloseMobileMenu();
   }
 
   return (
@@ -96,6 +108,33 @@ export default function Header() {
               >
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
               </button>
+
+              {/* Auth */}
+              {isAuthenticated ? (
+                <div className="flex items-center gap-2">
+                  <span className="hidden sm:flex items-center gap-1.5 text-sm text-zinc-600 dark:text-zinc-400">
+                    <User size={14} />
+                    {user?.username}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                    aria-label={t.auth.logout}
+                    title={t.auth.logout}
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </div>
+              ) : (
+                <NavLink
+                  to="/login"
+                  onClick={handleCloseMobileMenu}
+                  className="flex items-center gap-1.5 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+                >
+                  <LogIn size={16} />
+                  {t.auth.login}
+                </NavLink>
+              )}
             </div>
           </div>
         </nav>

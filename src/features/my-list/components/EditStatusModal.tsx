@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Modal, Button } from '@/components/ui';
-import { useMyListStore } from '@/store/myListStore';
 import { useI18n } from '@/hooks/useI18n';
+import { useUpdateEntry } from '@/features/my-list/hooks/useUpdateEntry';
+import { useRemoveFromList } from '@/features/my-list/hooks/useRemoveFromList';
 import { WATCH_STATUSES } from '@/utils/constants';
 import type { WatchStatus } from '@/utils/constants';
 import type { UserListEntry } from '@/types';
@@ -21,7 +22,8 @@ const inputClass =
 
 export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusModalProps) {
   const { t } = useI18n();
-  const { updateStatus, updateScore, updateEpisode, removeFromList } = useMyListStore();
+  const updateEntry = useUpdateEntry();
+  const removeFromList = useRemoveFromList();
 
   const [status, setStatus] = useState<WatchStatus>(entry.status);
   const [score, setScore] = useState<string>(entry.user_score ? String(entry.user_score) : '');
@@ -42,14 +44,17 @@ export default function EditStatusModal({ entry, isOpen, onClose }: EditStatusMo
   }
 
   function handleSave() {
-    updateStatus(entry.mal_id, status);
-    updateScore(entry.mal_id, score ? Number(score) : null);
-    updateEpisode(entry.mal_id, episode ? Number(episode) : null);
+    updateEntry.mutate({
+      mal_id: entry.mal_id,
+      status,
+      user_score: score ? Number(score) : null,
+      current_episode: episode ? Number(episode) : null,
+    });
     onClose();
   }
 
   function handleRemove() {
-    removeFromList(entry.mal_id);
+    removeFromList.mutate(entry.mal_id);
     onClose();
   }
 

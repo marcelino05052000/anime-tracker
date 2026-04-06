@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Trophy, Plus, Check, ArrowLeft } from 'lucide-react';
+import { Star, Trophy, Plus, Check, ArrowLeft, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui';
-import { useMyListStore } from '@/store/myListStore';
 import { useI18n } from '@/hooks/useI18n';
+import { useAuthContext } from '@/features/auth/context/AuthContext';
+import { useIsInList } from '@/features/my-list/hooks/useIsInList';
 import type { Anime } from '@/types';
 import AddToListModal from './AddToListModal';
 
@@ -15,12 +16,20 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
   const navigate = useNavigate();
   const { t } = useI18n();
   const [modalOpen, setModalOpen] = useState(false);
-  const isInList = useMyListStore((state) => state.isInList);
-  const inList = isInList(anime.mal_id);
+  const { isAuthenticated } = useAuthContext();
+  const { isInList } = useIsInList(anime.mal_id);
 
   const title = anime.title_english ?? anime.title;
   const poster = anime.images.webp.large_image_url || anime.images.jpg.large_image_url;
   const backdrop = anime.images.webp.large_image_url || anime.images.jpg.large_image_url;
+
+  function handleListAction() {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { returnTo: `/anime/${anime.mal_id}` } });
+      return;
+    }
+    setModalOpen(true);
+  }
 
   return (
     <>
@@ -93,28 +102,36 @@ export default function AnimeBanner({ anime }: AnimeBannerProps) {
 
               {/* CTA */}
               <div>
-                <Button
-                  variant={inList ? 'secondary' : 'primary'}
-                  size="md"
-                  onClick={() => setModalOpen(true)}
-                >
-                  {inList ? (
-                    <>
-                      <Check size={16} /> {t.animeBanner.inMyList}
-                    </>
-                  ) : (
-                    <>
-                      <Plus size={16} /> {t.animeBanner.addToList}
-                    </>
-                  )}
-                </Button>
+                {!isAuthenticated ? (
+                  <Button variant="primary" size="md" onClick={handleListAction}>
+                    <LogIn size={16} /> {t.auth.loginRequired}
+                  </Button>
+                ) : (
+                  <Button
+                    variant={isInList ? 'secondary' : 'primary'}
+                    size="md"
+                    onClick={handleListAction}
+                  >
+                    {isInList ? (
+                      <>
+                        <Check size={16} /> {t.animeBanner.inMyList}
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={16} /> {t.animeBanner.addToList}
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <AddToListModal anime={anime} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      {isAuthenticated && (
+        <AddToListModal anime={anime} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      )}
     </>
   );
 }
