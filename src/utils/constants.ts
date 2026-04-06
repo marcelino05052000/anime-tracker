@@ -4,6 +4,8 @@ export const QUERY_KEYS = {
   ANIME_SEARCH: 'anime-search',
   ANIME_DETAILS: 'anime-details',
   GENRES: 'genres',
+  AUTH_USER: 'auth-user',
+  MY_LIST: 'my-list',
 } as const;
 
 export const WATCH_STATUSES = [

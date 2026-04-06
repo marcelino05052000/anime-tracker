@@ -1,0 +1,24 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { backendApi } from '@/services/backendApi';
+import { QUERY_KEYS } from '@/utils/constants';
+import type { AuthUser } from './useAuth';
+
+interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export function useRegister() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: RegisterData): Promise<AuthUser> => {
+      const res = await backendApi.post('/auth/register', data);
+      return res.data.user;
+    },
+    onSuccess: (user) => {
+      queryClient.setQueryData([QUERY_KEYS.AUTH_USER], user);
+    },
+  });
+}
