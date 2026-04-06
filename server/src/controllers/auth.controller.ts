@@ -21,14 +21,14 @@ function setTokenCookies(res: Response, userId: string): void {
   res.cookie('accessToken', signAccessToken(userId), {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'strict',
+    sameSite: isProduction ? 'none' : 'strict',
     maxAge: 15 * 60 * 1000, // 15min
   });
 
   res.cookie('refreshToken', signRefreshToken(userId), {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'strict',
+    sameSite: isProduction ? 'none' : 'strict',
     path: '/api/auth/refresh',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
   });
