@@ -5,6 +5,7 @@ import { useI18n } from '@/hooks/useI18n';
 import { useAnimeDetails } from '@/features/anime-details/hooks/useAnimeDetails';
 import AnimeBanner from '@/features/anime-details/components/AnimeBanner';
 import AnimeInfo from '@/features/anime-details/components/AnimeInfo';
+import CommentsSection from '@/features/comments/components/CommentsSection';
 
 export default function AnimeDetailsPage() {
   const { t } = useI18n();
@@ -36,6 +37,7 @@ export default function AnimeDetailsPage() {
     <div>
       <AnimeBanner anime={anime} />
       <AnimeInfo anime={anime} />
+      <CommentsSection malId={anime.mal_id} />
     </div>
   );
 }

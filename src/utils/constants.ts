@@ -6,6 +6,8 @@ export const QUERY_KEYS = {
   GENRES: 'genres',
   AUTH_USER: 'auth-user',
   MY_LIST: 'my-list',
+  COMMENTS: 'comments',
+  COMMENT_REPLIES: 'comment-replies',
 } as const;
 
 export const WATCH_STATUSES = [
