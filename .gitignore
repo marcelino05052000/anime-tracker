@@ -15,6 +15,9 @@ dist-ssr
 .claude
 CLAUDE.md
 
+# Server env
+server/.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
