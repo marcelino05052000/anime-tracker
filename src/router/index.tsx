@@ -1,8 +1,7 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
 import ProtectedRoute from '@/features/auth/components/ProtectedRoute';
 import HomePage from '@/pages/HomePage';
-import SearchPage from '@/pages/SearchPage';
 import AnimeDetailsPage from '@/pages/AnimeDetailsPage';
 import MyListPage from '@/pages/MyListPage';
 import LoginPage from '@/pages/LoginPage';
@@ -15,7 +14,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'search', element: <SearchPage /> },
+      { path: 'search', element: <Navigate to="/" replace /> },
       { path: 'anime/:id', element: <AnimeDetailsPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'register', element: <RegisterPage /> },

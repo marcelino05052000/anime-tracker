@@ -70,9 +70,6 @@ export default function Header() {
               <NavLink to="/" end className={navLinkClass} onClick={handleCloseMobileMenu}>
                 {t.nav.home}
               </NavLink>
-              <NavLink to="/search" className={navLinkClass} onClick={handleCloseMobileMenu}>
-                {t.nav.search}
-              </NavLink>
               <NavLink to="/my-list" className={navLinkClass} onClick={handleCloseMobileMenu}>
                 {t.nav.myList}
               </NavLink>
