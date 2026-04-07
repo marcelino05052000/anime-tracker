@@ -8,6 +8,7 @@ import {
 } from '@/i18n/animeFieldTranslations';
 import type { Anime } from '@/types';
 import GenreBadges from './GenreBadges';
+import StreamingPlatforms from './StreamingPlatforms';
 import YouTubeEmbed from './YouTubeEmbed';
 
 interface AnimeInfoProps {
@@ -98,6 +99,8 @@ export default function AnimeInfo({ anime }: AnimeInfoProps) {
             <GenreBadges genres={anime.genres} themes={anime.themes} />
           </section>
         )}
+
+        <StreamingPlatforms platforms={anime.streaming ?? []} />
       </aside>
     </div>
   );

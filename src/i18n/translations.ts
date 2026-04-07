@@ -35,6 +35,7 @@ const translations = {
       rating: 'Rating',
       popularity: 'Popularity',
       members: 'Members',
+      streaming: 'Where to Watch',
     },
     watchStatus: {
       watching: 'Watching',
@@ -166,6 +167,7 @@ const translations = {
       rating: 'Classificação',
       popularity: 'Popularidade',
       members: 'Membros',
+      streaming: 'Onde Assistir',
     },
     watchStatus: {
       watching: 'Assistindo',

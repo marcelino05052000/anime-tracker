@@ -38,6 +38,11 @@ export interface AnimeStudio {
   url: string;
 }
 
+export interface StreamingPlatform {
+  name: string;
+  url: string;
+}
+
 export type AnimeStatus =
   | 'Finished Airing'
   | 'Currently Airing'
@@ -71,6 +76,7 @@ export interface Anime {
   studios: AnimeStudio[];
   genres: AnimeGenre[];
   themes: AnimeGenre[];
+  streaming: StreamingPlatform[];
 }
 
 export interface AnimeSearchParams {
