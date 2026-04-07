@@ -6,6 +6,7 @@ const translations = {
       home: 'Home',
       search: 'Search',
       myList: 'My List',
+      notifications: 'Notifications',
     },
     home: {
       thisSeason: 'This Season',
@@ -152,6 +153,7 @@ const translations = {
       home: 'Início',
       search: 'Busca',
       myList: 'Minha Lista',
+      notifications: 'Notificações',
     },
     home: {
       thisSeason: 'Essa Temporada',

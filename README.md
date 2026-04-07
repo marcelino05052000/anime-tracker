@@ -9,6 +9,7 @@ Anime catalogue and tracker consuming the [Jikan API](https://jikan.moe/) (unoff
 - **Details** — backdrop banner, poster, score, rank, synopsis, YouTube trailer, and full metadata
 - **My List** — add anime to your personal list with watch status, current episode, and score; data saved in `localStorage`
 - **Theme** — light/dark mode with persistence across sessions
+- **Notifications** — daily episode alerts for anime in your watching list; bell badge in header and dedicated notifications timeline
 - **Internationalization** — UI in English and Brazilian Portuguese; synopsis auto-translated via MyMemory API; fields like status, season, rating, duration, and genres also translated
 
 ## Stack
@@ -33,6 +34,7 @@ Anime catalogue and tracker consuming the [Jikan API](https://jikan.moe/) (unoff
 | `/search` | Search with filters |
 | `/anime/:id` | Anime details |
 | `/my-list` | User's personal list |
+| `/notifications` | Episode alerts (protected) |
 
 ## Installation
 
@@ -64,7 +66,8 @@ src/
 │   ├── home/        # useSeasonalAnime, useTopAnime, AnimeCard, AnimeGrid, SeasonalSection, TopAnimeSection
 │   ├── search/      # useAnimeSearch, SearchFilters, Pagination
 │   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
-│   └── my-list/     # MyListTabs, MyListCard, EditStatusModal
+│   ├── my-list/     # MyListTabs, MyListCard, EditStatusModal
+│   └── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
 ├── hooks/           # useDebounce, useTheme, useI18n
 ├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
 ├── pages/           # Feature composition only — no logic
@@ -102,6 +105,7 @@ Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (w
 - **Detalhes** — banner com backdrop, poster, score, rank, sinopse, trailer do YouTube e metadados completos
 - **Minha Lista** — adicione animes à sua lista pessoal com status de watch, episódio atual e nota; dados salvos no `localStorage`
 - **Tema** — modo claro/escuro com persistência entre sessões
+- **Notificações** — alertas diários de episódios para animes na sua lista de assistindo; badge de sino no header e timeline dedicada de notificações
 - **Internacionalização** — interface em Inglês e Português (Brasil); sinopse traduzida automaticamente via MyMemory API; campos como status, temporada, classificação, duração e gêneros também traduzidos
 
 ## Stack
@@ -126,6 +130,7 @@ Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (w
 | `/search` | Busca com filtros |
 | `/anime/:id` | Detalhes de um anime |
 | `/my-list` | Lista pessoal do usuário |
+| `/notifications` | Alertas de episódios (protegida) |
 
 ## Instalação e uso
 
@@ -157,7 +162,8 @@ src/
 │   ├── home/        # useSeasonalAnime, useTopAnime, AnimeCard, AnimeGrid, SeasonalSection, TopAnimeSection
 │   ├── search/      # useAnimeSearch, SearchFilters, Pagination
 │   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
-│   └── my-list/     # MyListTabs, MyListCard, EditStatusModal
+│   ├── my-list/     # MyListTabs, MyListCard, EditStatusModal
+│   └── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
 ├── hooks/           # useDebounce, useTheme, useI18n
 ├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
 ├── pages/           # Composição de features (sem lógica)
