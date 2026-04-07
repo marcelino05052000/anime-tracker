@@ -8,6 +8,8 @@ export const QUERY_KEYS = {
   MY_LIST: 'my-list',
   COMMENTS: 'comments',
   COMMENT_REPLIES: 'comment-replies',
+  NOTIFICATIONS: 'notifications',
+  NOTIFICATION_UNREAD_COUNT: 'notification-unread-count',
 } as const;
 
 export const WATCH_STATUSES = [
