@@ -132,6 +132,20 @@ const translations = {
       deleteConfirm: 'Delete this comment?',
       noComments: 'No comments yet. Be the first!',
     },
+    notifications: {
+      title: 'Notifications',
+      markAsRead: 'Mark as read',
+      markAllAsRead: 'Mark all as read',
+      episodeAvailable: 'Episode {number} available!',
+      newEpisode: 'New episode available!',
+      noNotifications: 'No notifications yet',
+      timeAgo: {
+        justNow: 'just now',
+        minutesAgo: '{count}m ago',
+        hoursAgo: '{count}h ago',
+        daysAgo: '{count}d ago',
+      },
+    },
   },
   'pt-BR': {
     nav: {
@@ -263,6 +277,20 @@ const translations = {
       sortTop: 'Mais votados',
       deleteConfirm: 'Excluir este comentário?',
       noComments: 'Nenhum comentário ainda. Seja o primeiro!',
+    },
+    notifications: {
+      title: 'Notificações',
+      markAsRead: 'Marcar como lida',
+      markAllAsRead: 'Marcar todas como lidas',
+      episodeAvailable: 'Episódio {number} disponível!',
+      newEpisode: 'Novo episódio disponível!',
+      noNotifications: 'Nenhuma notificação ainda',
+      timeAgo: {
+        justNow: 'agora',
+        minutesAgo: '{count}min atrás',
+        hoursAgo: '{count}h atrás',
+        daysAgo: '{count}d atrás',
+      },
     },
   },
 } as const;
