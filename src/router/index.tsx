@@ -7,6 +7,7 @@ import MyListPage from '@/pages/MyListPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import NotFoundPage from '@/pages/NotFoundPage';
+import NotificationsPage from '@/pages/NotificationsPage';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: 'my-list', element: <MyListPage /> },
+          { path: 'notifications', element: <NotificationsPage /> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },

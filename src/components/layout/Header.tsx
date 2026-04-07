@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Menu, Moon, Sun, Tv, X, LogIn, LogOut, User } from 'lucide-react';
+import { Menu, Moon, Sun, Tv, X, LogIn, LogOut, User, Bell } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useI18n } from '@/hooks/useI18n';
 import { useAuthContext } from '@/features/auth/context/AuthContext';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useUnreadCount } from '@/features/notifications/hooks/useUnreadCount';
 import type { Language } from '@/i18n/translations';
 
 const LANGUAGES: { value: Language; label: string }[] = [
@@ -26,6 +27,7 @@ export default function Header() {
   const { user, isAuthenticated } = useAuthContext();
   const logout = useLogout();
   const navigate = useNavigate();
+  const { data: unreadCount = 0 } = useUnreadCount();
 
   function handleCloseMobileMenu() {
     setMobileMenuOpen(false);
@@ -105,6 +107,22 @@ export default function Header() {
               >
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
               </button>
+
+              {/* Notifications */}
+              {isAuthenticated && (
+                <NavLink
+                  to="/notifications"
+                  onClick={handleCloseMobileMenu}
+                  className="relative p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  <Bell size={18} />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-violet-600 text-white text-[10px] font-bold px-1">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                </NavLink>
+              )}
 
               {/* Auth */}
               {isAuthenticated ? (
