@@ -3,20 +3,21 @@ import { useI18n } from '@/hooks/useI18n';
 import { useForumPosts } from '../hooks/useForumPosts';
 import { Button } from '@/components/ui';
 import ForumPostList from './ForumPostList';
-import type { ForumCategory } from '@/types';
+import type { ForumCategory, ForumPostSort } from '@/types';
 
 interface ForumSectionRecentProps {
   page: number;
   onPageChange: (page: number) => void;
   category?: ForumCategory;
+  sort?: ForumPostSort;
 }
 
-export default function ForumSectionRecent({ page, onPageChange, category }: ForumSectionRecentProps) {
+export default function ForumSectionRecent({ page, onPageChange, category, sort }: ForumSectionRecentProps) {
   const { t } = useI18n();
   const { data, isLoading } = useForumPosts({
     page,
     limit: 10,
-    sort: 'recent',
+    sort: sort ?? 'recent',
     category,
   });
 

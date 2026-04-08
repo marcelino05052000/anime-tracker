@@ -181,6 +181,8 @@ const translations = {
         delete: 'Delete',
         cancel: 'Cancel',
         edit: 'Edit',
+        notFound: 'Post not found',
+        backToForum: 'Back to Forum',
       },
       newPost: {
         title: 'New Post',
@@ -407,6 +409,8 @@ const translations = {
         delete: 'Excluir',
         cancel: 'Cancelar',
         edit: 'Editar',
+        notFound: 'Post não encontrado',
+        backToForum: 'Voltar ao Fórum',
       },
       newPost: {
         title: 'Novo Post',

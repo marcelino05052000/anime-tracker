@@ -23,12 +23,12 @@ export default function ForumPostPage() {
   if (isError || !post) {
     return (
       <div className="flex flex-col items-center justify-center py-32 gap-4 text-zinc-400">
-        <p className="text-lg font-medium">Post not found</p>
+        <p className="text-lg font-medium">{t.forum.post.notFound}</p>
         <Link
           to="/forum"
           className="flex items-center gap-1.5 text-sm text-violet-500 hover:text-violet-400 transition-colors"
         >
-          <ArrowLeft size={16} /> Back to Forum
+          <ArrowLeft size={16} /> {t.forum.post.backToForum}
         </Link>
       </div>
     );

@@ -3,12 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import ForumSectionEpisodes from '@/features/forum/components/ForumSectionEpisodes';
 import ForumSectionPopular from '@/features/forum/components/ForumSectionPopular';
 import ForumSectionRecent from '@/features/forum/components/ForumSectionRecent';
-import type { ForumCategory } from '@/types';
+import type { ForumCategory, ForumPostSort } from '@/types';
 
 export default function ForumHomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') as ForumCategory | null;
-  const sortParam = searchParams.get('sort');
+  const sortParam = searchParams.get('sort') as ForumPostSort | null;
   const [page, setPage] = useState(1);
 
   // If filtering by category or sort, show just the filtered list
@@ -26,6 +26,7 @@ export default function ForumHomePage() {
           page={page}
           onPageChange={handlePageChange}
           category={categoryParam ?? undefined}
+          sort={sortParam ?? undefined}
         />
       </div>
     );

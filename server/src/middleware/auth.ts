@@ -1,4 +1,4 @@
-import type { Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import type { AuthRequest } from '../types/index.js';
@@ -19,6 +19,15 @@ export function verifyAccessToken(req: AuthRequest, res: Response, next: NextFun
   } catch {
     res.status(401).json({ message: 'Invalid or expired token' });
   }
+}
+
+export function optionalAuth(req: Request, res: Response, next: NextFunction): void {
+  const token = (req as AuthRequest).cookies?.accessToken as string | undefined;
+  if (!token) {
+    next();
+    return;
+  }
+  verifyAccessToken(req as AuthRequest, res, next);
 }
 
 export function requireRole(...roles: string[]) {

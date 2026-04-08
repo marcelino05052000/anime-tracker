@@ -30,12 +30,8 @@ export default function ForumAnimePage() {
           <ArrowLeft size={14} />
           {t.forum.post.forum}
         </Link>
-        {animeTitle && (
-          <>
-            <span className="text-xs text-zinc-500">/</span>
-            <span className="text-sm text-zinc-400">{animeTitle}</span>
-          </>
-        )}
+        <span className="text-xs text-zinc-500">/</span>
+        <span className="text-sm text-zinc-400">{animeTitle ?? t.forum.post.forum}</span>
       </div>
 
       <ForumPostList posts={data?.posts} isLoading={isLoading} />

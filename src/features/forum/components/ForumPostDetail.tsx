@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, Pin, Lock, Pencil } from 'lucide-react';
+import { Eye, Pin, Lock, Pencil, Trash2 } from 'lucide-react';
 import { useI18n } from '@/hooks/useI18n';
 import { useAuthContext } from '@/features/auth/context/AuthContext';
 import { useEditPost } from '../hooks/useEditPost';
+import { useDeletePost } from '../hooks/useDeletePost';
 import CategoryBadge from './CategoryBadge';
 import ForumModActions from './ForumModActions';
 import type { ForumPost } from '@/types';
@@ -37,6 +38,14 @@ export default function ForumPostDetail({ post, onDelete }: ForumPostDetailProps
 
   const isAuthor = user?.id === post.author._id;
   const isMod = user?.role === 'moderator' || user?.role === 'admin';
+  const deletePost = useDeletePost();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  function handleDelete() {
+    deletePost.mutate(post._id, {
+      onSuccess: () => onDelete(),
+    });
+  }
 
   function handleSaveEdit() {
     const trimmedTitle = editTitle.trim();
@@ -139,6 +148,32 @@ export default function ForumPostDetail({ post, onDelete }: ForumPostDetailProps
             <Pencil size={12} />
             {t.forum.post.edit}
           </button>
+          {showDeleteConfirm ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-red-400">{t.forum.post.deleteConfirm}</span>
+              <button
+                onClick={handleDelete}
+                disabled={deletePost.isPending}
+                className="text-xs font-medium text-red-500 hover:text-red-400 transition-colors cursor-pointer"
+              >
+                {t.forum.post.delete}
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors cursor-pointer"
+              >
+                {t.forum.post.cancel}
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md text-zinc-400 hover:text-red-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              <Trash2 size={12} />
+              {t.forum.post.delete}
+            </button>
+          )}
         </div>
       )}
 

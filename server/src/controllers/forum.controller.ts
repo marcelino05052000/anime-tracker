@@ -132,12 +132,8 @@ export async function updatePost(req: AuthRequest, res: Response): Promise<void>
       return;
     }
 
-    const user = await User.findById(req.userId).select('role').lean();
-    const isAuthor = String(post.author) === req.userId;
-    const isMod = user?.role === 'moderator' || user?.role === 'admin';
-
-    if (!isAuthor && !isMod) {
-      res.status(403).json({ message: 'Not authorized' });
+    if (String(post.author) !== req.userId) {
+      res.status(403).json({ message: 'Only the author can edit this post' });
       return;
     }
 
