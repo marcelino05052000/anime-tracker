@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 import listRoutes from './routes/list.routes.js';
 import commentRoutes from './routes/comment.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
+import forumRoutes from './routes/forum.routes.js';
 import { startEpisodeAlertsJob } from './jobs/episodeAlerts.js';
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/list', listRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/forum', forumRoutes);
 
 app.use(errorHandler);
 
