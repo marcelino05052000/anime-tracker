@@ -123,7 +123,7 @@ export async function getMe(req: AuthRequest, res: Response): Promise<void> {
     }
 
     res.json({
-      user: { id: user._id, username: user.username, email: user.email },
+      user: { id: user._id, username: user.username, email: user.email, role: user.role },
     });
   } catch (error) {
     console.error('[GetMe Error]', error);

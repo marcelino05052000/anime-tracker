@@ -2,6 +2,7 @@ import type { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import type { AuthRequest } from '../types/index.js';
+import { User } from '../models/User.js';
 
 export function verifyAccessToken(req: AuthRequest, res: Response, next: NextFunction): void {
   const token = req.cookies.accessToken as string | undefined;
@@ -18,4 +19,20 @@ export function verifyAccessToken(req: AuthRequest, res: Response, next: NextFun
   } catch {
     res.status(401).json({ message: 'Invalid or expired token' });
   }
+}
+
+export function requireRole(...roles: string[]) {
+  return async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    if (!req.userId) {
+      res.status(401).json({ message: 'Authentication required' });
+      return;
+    }
+    const user = await User.findById(req.userId).select('role').lean();
+    if (!user || !roles.includes(user.role as string)) {
+      res.status(403).json({ message: 'Insufficient permissions' });
+      return;
+    }
+    req.userRole = user.role as string;
+    next();
+  };
 }
