@@ -17,14 +17,23 @@ export default function HomePage() {
     page,
     status,
     order_by,
+    sort,
+    season,
     setQ,
     setPage,
     setStatus,
     setOrderBy,
+    setSort,
+    setSeason,
   } = useAnimeSearch();
 
-  const hasQuery = !!(q || status || order_by);
+  const hasQuery = !!(q || status || order_by || season);
   const isEmpty = hasQuery && !isLoading && animes?.length === 0;
+
+  function handleOrderByChange(orderBy: string | undefined, sortDir: string | undefined) {
+    setOrderBy(orderBy);
+    setSort(sortDir);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col gap-6 sm:gap-8">
@@ -32,9 +41,12 @@ export default function HomePage() {
         q={q}
         status={status}
         order_by={order_by}
+        sort={sort}
+        season={season}
         onQChange={setQ}
         onStatusChange={setStatus}
-        onOrderByChange={setOrderBy}
+        onOrderByChange={handleOrderByChange}
+        onSeasonChange={setSeason}
       />
 
       {hasQuery ? (

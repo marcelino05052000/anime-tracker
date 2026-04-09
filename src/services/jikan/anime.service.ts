@@ -31,6 +31,11 @@ export const animeService = {
       .get<JikanPaginatedResponse<Anime>>('/anime', { params })
       .then((r) => r.data),
 
+  searchSeasonal: (params: { page?: number; limit?: number; order_by?: string; sort?: string; sfw?: boolean }) =>
+    api
+      .get<JikanPaginatedResponse<Anime>>('/seasons/now', { params })
+      .then((r) => r.data),
+
   getGenres: () =>
     api.get<{ data: { mal_id: number; name: string }[] }>('/genres/anime').then((r) => r.data.data),
 };

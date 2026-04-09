@@ -5,9 +5,12 @@ interface SearchFiltersProps {
   q: string;
   status: string | undefined;
   order_by: string | undefined;
+  sort: string | undefined;
+  season: string | undefined;
   onQChange: (value: string) => void;
   onStatusChange: (value: string | undefined) => void;
-  onOrderByChange: (value: string | undefined) => void;
+  onOrderByChange: (orderBy: string | undefined, sort: string | undefined) => void;
+  onSeasonChange: (value: string | undefined) => void;
 }
 
 const selectClass =
@@ -17,9 +20,12 @@ export default function SearchFilters({
   q,
   status,
   order_by,
+  sort,
+  season,
   onQChange,
   onStatusChange,
   onOrderByChange,
+  onSeasonChange,
 }: SearchFiltersProps) {
   const { t } = useI18n();
   const s = t.search;
@@ -29,15 +35,40 @@ export default function SearchFilters({
     { value: 'airing', label: s.statusAiring },
     { value: 'complete', label: s.statusCompleted },
     { value: 'upcoming', label: s.statusUpcoming },
+    { value: 'season', label: s.statusThisSeason },
   ];
 
   const orderByOptions = [
     { value: '', label: s.orderRelevance },
-    { value: 'score', label: s.orderScore },
+    { value: 'score:desc', label: s.orderScoreDesc },
+    { value: 'score:asc', label: s.orderScoreAsc },
     { value: 'popularity', label: s.orderPopularity },
     { value: 'rank', label: s.orderRank },
     { value: 'members', label: s.orderMembers },
   ];
+
+  const currentOrderValue = order_by && sort ? `${order_by}:${sort}` : order_by ?? '';
+
+  function handleStatusChange(value: string) {
+    if (value === 'season') {
+      onSeasonChange('current');
+      onStatusChange(undefined);
+    } else {
+      onSeasonChange(undefined);
+      onStatusChange(value || undefined);
+    }
+  }
+
+  function handleOrderByChange(value: string) {
+    if (value.includes(':')) {
+      const [ob, s] = value.split(':');
+      onOrderByChange(ob, s);
+    } else {
+      onOrderByChange(value || undefined, undefined);
+    }
+  }
+
+  const currentStatusValue = season === 'current' ? 'season' : status ?? '';
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_auto] gap-3">
@@ -58,8 +89,8 @@ export default function SearchFilters({
 
       {/* Status filter */}
       <select
-        value={status ?? ''}
-        onChange={(e) => onStatusChange(e.target.value || undefined)}
+        value={currentStatusValue}
+        onChange={(e) => handleStatusChange(e.target.value)}
         className={selectClass}
       >
         {statusOptions.map((opt) => (
@@ -71,8 +102,8 @@ export default function SearchFilters({
 
       {/* Order by filter */}
       <select
-        value={order_by ?? ''}
-        onChange={(e) => onOrderByChange(e.target.value || undefined)}
+        value={currentOrderValue}
+        onChange={(e) => handleOrderByChange(e.target.value)}
         className={selectClass}
       >
         {orderByOptions.map((opt) => (
