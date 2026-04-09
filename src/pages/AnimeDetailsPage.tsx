@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageSquare } from 'lucide-react';
 import { Spinner } from '@/components/ui';
 import { useI18n } from '@/hooks/useI18n';
 import { useAnimeDetails } from '@/features/anime-details/hooks/useAnimeDetails';
@@ -37,6 +37,15 @@ export default function AnimeDetailsPage() {
     <div>
       <AnimeBanner anime={anime} />
       <AnimeInfo anime={anime} />
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <Link
+          to={`/forum/anime/${anime.mal_id}`}
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-violet-500/40 hover:text-violet-500 transition-colors"
+        >
+          <MessageSquare size={16} />
+          {t.forum.post.forum}
+        </Link>
+      </div>
       <CommentsSection malId={anime.mal_id} />
     </div>
   );

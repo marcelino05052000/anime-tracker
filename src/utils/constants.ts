@@ -10,6 +10,10 @@ export const QUERY_KEYS = {
   COMMENT_REPLIES: 'comment-replies',
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_UNREAD_COUNT: 'notification-unread-count',
+  FORUM_POSTS: 'forum-posts',
+  FORUM_POST: 'forum-post',
+  FORUM_COMMENTS: 'forum-comments',
+  FORUM_COMMENT_REPLIES: 'forum-comment-replies',
 } as const;
 
 export const WATCH_STATUSES = [

@@ -75,6 +75,9 @@ export default function Header() {
               <NavLink to="/my-list" className={navLinkClass} onClick={handleCloseMobileMenu}>
                 {t.nav.myList}
               </NavLink>
+              <NavLink to="/forum" className={navLinkClass} onClick={handleCloseMobileMenu}>
+                {t.nav.forum}
+              </NavLink>
             </div>
 
             <div className="flex items-center justify-between sm:justify-start gap-3 pt-2 sm:pt-0 border-t border-zinc-200 dark:border-zinc-800 sm:border-t-0">
