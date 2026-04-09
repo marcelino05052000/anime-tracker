@@ -16,55 +16,47 @@ export default function HomePage() {
     q,
     page,
     status,
-    order_by,
-    sort,
+    order,
     season,
     setQ,
     setPage,
     setStatus,
-    setOrderBy,
-    setSort,
+    setOrder,
     setSeason,
   } = useAnimeSearch();
 
-  const hasQuery = !!(q || status || order_by || season);
+  const hasQuery = !!(q || status || order || season);
   const isEmpty = hasQuery && !isLoading && animes?.length === 0;
-
-  function handleOrderByChange(orderBy: string | undefined, sortDir: string | undefined) {
-    setOrderBy(orderBy);
-    setSort(sortDir);
-  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col gap-6 sm:gap-8">
       <SearchFilters
         q={q}
         status={status}
-        order_by={order_by}
-        sort={sort}
+        order={order}
         season={season}
         onQChange={setQ}
         onStatusChange={setStatus}
-        onOrderByChange={handleOrderByChange}
+        onOrderChange={setOrder}
         onSeasonChange={setSeason}
       />
 
       {hasQuery ? (
         <>
-          {isLoading && (
+          {isLoading && !animes && (
             <div className="flex justify-center py-16">
               <Spinner size={36} />
             </div>
           )}
 
-          {isEmpty && (
+          {!isLoading && animes?.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 sm:py-24 text-zinc-400 gap-2 text-center">
               <p className="text-lg font-medium">{t.search.noResultsTitle}</p>
               <p className="text-sm">{t.search.noResultsSubtitle}</p>
             </div>
           )}
 
-          {!isLoading && animes && animes.length > 0 && (
+          {animes && animes.length > 0 && (
             <>
               <AnimeGrid animes={animes} />
               {pagination && (

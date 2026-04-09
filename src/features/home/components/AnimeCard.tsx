@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, Users } from 'lucide-react';
 import { useI18n } from '@/hooks/useI18n';
 import type { Anime } from '@/types';
 
@@ -41,11 +41,23 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
           {title}
         </p>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 text-right">
-          {[anime.type, anime.episodes ? `${anime.episodes} ${t.animeCard.ep}` : null]
-            .filter(Boolean)
-            .join(' · ')}
-        </p>
+        <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+          <span>
+            {[anime.type, anime.episodes ? `${anime.episodes} ${t.animeCard.ep}` : null]
+              .filter(Boolean)
+              .join(' · ')}
+          </span>
+          {anime.members !== null && (
+            <span className="flex items-center gap-1">
+              <Users size={11} />
+              {anime.members >= 1_000_000
+                ? `${(anime.members / 1_000_000).toFixed(1)}M`
+                : anime.members >= 1_000
+                  ? `${(anime.members / 1_000).toFixed(0)}K`
+                  : anime.members}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

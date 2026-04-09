@@ -4,12 +4,11 @@ import { useI18n } from '@/hooks/useI18n';
 interface SearchFiltersProps {
   q: string;
   status: string | undefined;
-  order_by: string | undefined;
-  sort: string | undefined;
+  order: string | undefined;
   season: string | undefined;
   onQChange: (value: string) => void;
   onStatusChange: (value: string | undefined) => void;
-  onOrderByChange: (orderBy: string | undefined, sort: string | undefined) => void;
+  onOrderChange: (value: string | undefined) => void;
   onSeasonChange: (value: string | undefined) => void;
 }
 
@@ -19,12 +18,11 @@ const selectClass =
 export default function SearchFilters({
   q,
   status,
-  order_by,
-  sort,
+  order,
   season,
   onQChange,
   onStatusChange,
-  onOrderByChange,
+  onOrderChange,
   onSeasonChange,
 }: SearchFiltersProps) {
   const { t } = useI18n();
@@ -38,41 +36,28 @@ export default function SearchFilters({
     { value: 'season', label: s.statusThisSeason },
   ];
 
-  const orderByOptions = [
+  const orderOptions = [
     { value: '', label: s.orderRelevance },
-    { value: 'score:desc', label: s.orderScoreDesc },
-    { value: 'score:asc', label: s.orderScoreAsc },
+    { value: 'score_desc', label: s.orderScoreDesc },
+    { value: 'score_asc', label: s.orderScoreAsc },
     { value: 'popularity', label: s.orderPopularity },
-    { value: 'rank', label: s.orderRank },
+    { value: 'rank_asc', label: s.orderRankAsc },
+    { value: 'rank_desc', label: s.orderRankDesc },
     { value: 'members', label: s.orderMembers },
   ];
 
-  const currentOrderValue = order_by && sort ? `${order_by}:${sort}` : order_by ?? '';
+  const currentStatusValue = season === 'current' ? 'season' : status ?? '';
 
   function handleStatusChange(value: string) {
     if (value === 'season') {
       onSeasonChange('current');
-      onStatusChange(undefined);
     } else {
-      onSeasonChange(undefined);
       onStatusChange(value || undefined);
     }
   }
 
-  function handleOrderByChange(value: string) {
-    if (value.includes(':')) {
-      const [ob, s] = value.split(':');
-      onOrderByChange(ob, s);
-    } else {
-      onOrderByChange(value || undefined, undefined);
-    }
-  }
-
-  const currentStatusValue = season === 'current' ? 'season' : status ?? '';
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_auto] gap-3">
-      {/* Search input */}
       <div className="relative flex-1">
         <Search
           size={16}
@@ -87,7 +72,6 @@ export default function SearchFilters({
         />
       </div>
 
-      {/* Status filter */}
       <select
         value={currentStatusValue}
         onChange={(e) => handleStatusChange(e.target.value)}
@@ -100,13 +84,12 @@ export default function SearchFilters({
         ))}
       </select>
 
-      {/* Order by filter */}
       <select
-        value={currentOrderValue}
-        onChange={(e) => handleOrderByChange(e.target.value)}
+        value={order ?? ''}
+        onChange={(e) => onOrderChange(e.target.value || undefined)}
         className={selectClass}
       >
-        {orderByOptions.map((opt) => (
+        {orderOptions.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
