@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ForumSectionEpisodes from '@/features/forum/components/ForumSectionEpisodes';
 import ForumSectionPopular from '@/features/forum/components/ForumSectionPopular';
@@ -10,6 +10,10 @@ export default function ForumHomePage() {
   const categoryParam = searchParams.get('category') as ForumCategory | null;
   const sortParam = searchParams.get('sort') as ForumPostSort | null;
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [categoryParam, sortParam]);
 
   // If filtering by category or sort, show just the filtered list
   const isFiltered = !!categoryParam || !!sortParam;
