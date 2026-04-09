@@ -35,8 +35,19 @@ function setTokenCookies(res: Response, userId: string): void {
 }
 
 function clearTokenCookies(res: Response): void {
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
+  const isProduction = env.NODE_ENV === 'production';
+
+  res.clearCookie('accessToken', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'strict',
+  });
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'strict',
+    path: '/api/auth/refresh',
+  });
 }
 
 export async function register(req: Request, res: Response): Promise<void> {
