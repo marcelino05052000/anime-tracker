@@ -4,6 +4,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
+  html {
+    overflow-y: scroll;
+  }
+
   html,
   body,
   #root {
