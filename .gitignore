@@ -18,6 +18,10 @@ CLAUDE.md
 # Server env
 server/.env
 
+# Worktrees
+.worktrees
+.superpowers
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
