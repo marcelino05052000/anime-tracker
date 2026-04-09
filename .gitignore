@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+server/.env
+docs/
+.superpowers
+.worktrees
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
