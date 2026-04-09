@@ -6,7 +6,7 @@ import ForumSectionRecent from '@/features/forum/components/ForumSectionRecent';
 import type { ForumCategory, ForumPostSort } from '@/types';
 
 export default function ForumHomePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') as ForumCategory | null;
   const sortParam = searchParams.get('sort') as ForumPostSort | null;
   const [page, setPage] = useState(1);
