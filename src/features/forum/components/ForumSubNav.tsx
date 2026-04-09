@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Plus, ChevronDown, Filter } from 'lucide-react';
+import { Home, Plus, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useI18n } from '@/hooks/useI18n';
 import { useAuthContext } from '@/features/auth/context/AuthContext';
