@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { backendApi } from '@/services/backendApi';
+import { backendApi, markLoggedOut } from '@/services/backendApi';
 import { QUERY_KEYS } from '@/utils/constants';
 
 export function useLogout() {
@@ -7,6 +7,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
+      markLoggedOut();
       await backendApi.post('/auth/logout');
     },
     onSettled: () => {

@@ -10,7 +10,16 @@ export const backendApi = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+let isLoggedOut = false;
 let isRefreshing = false;
+
+export function markLoggedOut() {
+  isLoggedOut = true;
+}
+
+export function markLoggedIn() {
+  isLoggedOut = false;
+}
 let failedQueue: Array<{
   resolve: (value: unknown) => void;
   reject: (reason: unknown) => void;
@@ -36,8 +45,8 @@ backendApi.interceptors.response.use(
 
     const originalRequest = error.config;
 
-    // Don't retry refresh or login/register requests
-    if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/register')) {
+    // Don't retry after logout, refresh, or login/register requests
+    if (isLoggedOut || originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/register')) {
       return Promise.reject(error);
     }
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { backendApi } from '@/services/backendApi';
+import { backendApi, markLoggedIn } from '@/services/backendApi';
 import { QUERY_KEYS } from '@/utils/constants';
 import type { AuthUser } from './useAuth';
 
@@ -13,6 +13,7 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: async (data: LoginData): Promise<AuthUser> => {
+      markLoggedIn();
       const res = await backendApi.post('/auth/login', data);
       return res.data.user;
     },
