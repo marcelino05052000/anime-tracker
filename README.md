@@ -10,6 +10,7 @@ Anime catalogue and tracker consuming the [Jikan API](https://jikan.moe/) (unoff
 - **My List** — add anime to your personal list with watch status, current episode, and score; data saved in `localStorage`
 - **Theme** — light/dark mode with persistence across sessions
 - **Notifications** — daily episode alerts for anime in your watching list; bell badge in header and dedicated notifications timeline
+- **Forum** — per-anime discussion forum with posts, comments, votes, and moderation; home page with recent, popular, and episode discussion sections; automatic episode discussion threads created via cron job; role-based moderation (pin, lock, delete)
 - **Internationalization** — UI in English and Brazilian Portuguese; synopsis auto-translated via MyMemory API; fields like status, season, rating, duration, and genres also translated
 
 ## Stack
@@ -35,6 +36,10 @@ Anime catalogue and tracker consuming the [Jikan API](https://jikan.moe/) (unoff
 | `/anime/:id` | Anime details |
 | `/my-list` | User's personal list |
 | `/notifications` | Episode alerts (protected) |
+| `/forum` | Forum home — recent, popular, episode discussions |
+| `/forum/post/:postId` | Forum post with comments |
+| `/forum/new` | Create new post (protected) |
+| `/forum/anime/:malId` | Forum posts for a specific anime |
 
 ## Installation
 
@@ -67,7 +72,8 @@ src/
 │   ├── search/      # useAnimeSearch, SearchFilters, Pagination
 │   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
 │   ├── my-list/     # MyListTabs, MyListCard, EditStatusModal
-│   └── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
+│   ├── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
+│   └── forum/       # ForumSubNav, ForumPostCard, ForumCommentCard, AnimeSearchSelect, hooks (CRUD, votes, mod)
 ├── hooks/           # useDebounce, useTheme, useI18n
 ├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
 ├── pages/           # Feature composition only — no logic
@@ -106,6 +112,7 @@ Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (w
 - **Minha Lista** — adicione animes à sua lista pessoal com status de watch, episódio atual e nota; dados salvos no `localStorage`
 - **Tema** — modo claro/escuro com persistência entre sessões
 - **Notificações** — alertas diários de episódios para animes na sua lista de assistindo; badge de sino no header e timeline dedicada de notificações
+- **Fórum** — fórum de discussão por anime com posts, comentários, votos e moderação; home com seções de recentes, populares e discussões de episódios; threads automáticas de discussão de episódio via cron job; moderação com roles (fixar, trancar, excluir)
 - **Internacionalização** — interface em Inglês e Português (Brasil); sinopse traduzida automaticamente via MyMemory API; campos como status, temporada, classificação, duração e gêneros também traduzidos
 
 ## Stack
@@ -131,6 +138,10 @@ Catálogo e rastreador de animes consumindo a [Jikan API](https://jikan.moe/) (w
 | `/anime/:id` | Detalhes de um anime |
 | `/my-list` | Lista pessoal do usuário |
 | `/notifications` | Alertas de episódios (protegida) |
+| `/forum` | Home do fórum — recentes, populares, discussões de episódios |
+| `/forum/post/:postId` | Post do fórum com comentários |
+| `/forum/new` | Criar novo post (protegida) |
+| `/forum/anime/:malId` | Posts do fórum de um anime específico |
 
 ## Instalação e uso
 
@@ -163,7 +174,8 @@ src/
 │   ├── search/      # useAnimeSearch, SearchFilters, Pagination
 │   ├── anime-details/ # useAnimeDetails, AnimeBanner, AnimeInfo, GenreBadges, YouTubeEmbed, AddToListModal
 │   ├── my-list/     # MyListTabs, MyListCard, EditStatusModal
-│   └── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
+│   ├── notifications/ # useUnreadCount, useNotifications, useMarkAsRead, NotificationCard
+│   └── forum/       # ForumSubNav, ForumPostCard, ForumCommentCard, AnimeSearchSelect, hooks (CRUD, votos, mod)
 ├── hooks/           # useDebounce, useTheme, useI18n
 ├── i18n/            # translations.ts (EN/PT-BR), animeFieldTranslations.ts
 ├── pages/           # Composição de features (sem lógica)
