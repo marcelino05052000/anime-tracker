@@ -192,23 +192,33 @@ async function processEpisodeAlerts(): Promise<void> {
           });
 
           if (!existingPost) {
-            // Find or skip system user
-            const systemUser = await User.findOne({ username: 'system' }).lean();
-            if (systemUser) {
-              await ForumPost.create({
-                author: systemUser._id,
-                mal_id: anime.mal_id,
-                anime_title: anime.title,
-                anime_image_url: imageUrl,
-                title: `${anime.title} — Episode ${episodeNum} Discussion`,
-                body: `Discussion thread for Episode ${episodeNum} of ${anime.title}. Share your thoughts!`,
-                category: 'episode_discussion',
-                episode_number: episodeNum,
-                tags: [],
-                last_activity: new Date(),
-              });
-              forumPostsCreated++;
-            }
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const systemUser = (await User.findOneAndUpdate(
+              { username: 'system' },
+              {
+                $setOnInsert: {
+                  username: 'system',
+                  email: 'system@animetracker.internal',
+                  password: 'not-used',
+                  role: 'admin',
+                },
+              },
+              { upsert: true, new: true },
+            ))!;
+
+            await ForumPost.create({
+              author: systemUser._id,
+              mal_id: anime.mal_id,
+              anime_title: anime.title,
+              anime_image_url: imageUrl,
+              title: `${anime.title} — Episode ${episodeNum} Discussion`,
+              body: `Discussion thread for Episode ${episodeNum} of ${anime.title}. Share your thoughts!`,
+              category: 'episode_discussion',
+              episode_number: episodeNum,
+              tags: [],
+              last_activity: new Date(),
+            });
+            forumPostsCreated++;
           }
         }
       }
