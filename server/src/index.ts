@@ -10,6 +10,7 @@ import commentRoutes from './routes/comment.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
 import forumRoutes from './routes/forum.routes.js';
 import { startEpisodeAlertsJob } from './jobs/episodeAlerts.js';
+import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/list', listRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/forum', forumRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use(errorHandler);
 
